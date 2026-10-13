@@ -1,0 +1,8 @@
+{
+  "appId": "com.vadhyay.app",
+  "appName": "V Adhyay",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  }
+}
