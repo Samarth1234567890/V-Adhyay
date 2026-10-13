@@ -10,10 +10,6 @@ jobs:
   build-apk:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: v-adhyay-preview
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -24,21 +20,31 @@ jobs:
           node-version: 22
 
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '21'
 
+      - name: Confirm project location
+        run: |
+          ls -la
+          ls -la v-adhyay-preview
+          test -f v-adhyay-preview/package.json
+
       - name: Install dependencies
+        working-directory: v-adhyay-preview
         run: npm install
 
       - name: Build React app
+        working-directory: v-adhyay-preview
         run: npm run build
 
       - name: Create Android project
+        working-directory: v-adhyay-preview
         run: npx cap add android
 
       - name: Sync Android project
+        working-directory: v-adhyay-preview
         run: npx cap sync android
 
       - name: Build APK
@@ -51,3 +57,4 @@ jobs:
           name: V-Adhyay-Android-APK
           path: v-adhyay-preview/android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+          retention-days: 14
